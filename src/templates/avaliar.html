@@ -104,7 +104,9 @@
         </form>
     </div>
 </section>
+{% endblock %}
 
+{% block extra_js %}
 <script>
 function toggleTelefone() {
     const select = document.getElementById('permissao_contato');
@@ -116,7 +118,7 @@ document.addEventListener("DOMContentLoaded", toggleTelefone);
 // Mensagem de sucesso com redirecionamento automático
 {% if sucesso %}
 setTimeout(() => {
-    alert("Obrigado por sua avaliação! Ela foi enviada com sucesso e será vista diretamente pelos responsáveis.");
+    alert("Obrigado por sua avaliação! Ela foi enviada com sucesso.");
     window.location.href = "{{ url_for('avaliacao.avaliar') }}";
 }, 300);
 {% endif %}
