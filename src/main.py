@@ -2,12 +2,9 @@ import sys
 import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))  # DON'T CHANGE THIS !!!
 
-from flask import Flask, render_template, flash, redirect, url_for
-from src.models.avaliacao import db, Avaliacao, Contato
-from src.routes.avaliacao import avaliacao_bp
-from src.routes.contato import contato_bp
+from flask import Flask, render_template, request, redirect, url_for, session
+from src.models.avaliacao import db, Avaliacao
 
-# Criar aplicação Flask
 app = Flask(__name__)
 
 # Configuração do aplicativo
@@ -18,87 +15,76 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # Inicializar extensões
 db.init_app(app)
 
-# Registrar blueprints
-app.register_blueprint(avaliacao_bp, url_prefix='')
-app.register_blueprint(contato_bp, url_prefix='')
-
-# Rota principal
+# Página pública de avaliação
 @app.route('/')
-def index():
-    """Renderiza a página inicial"""
-    avaliacoes_recentes = Avaliacao.query.filter_by(aprovada=True).order_by(Avaliacao.data_avaliacao.desc()).limit(3).all()
-    avaliacoes_dict = [avaliacao.to_dict() for avaliacao in avaliacoes_recentes]
-    return render_template('index.html', avaliacoes=avaliacoes_dict)
+def avaliar():
+    return render_template('avaliar.html')
 
-# Manipulador de erro 404
-@app.errorhandler(404)
-def page_not_found(e):
-    """Renderiza página de erro 404 personalizada"""
-    return render_template('404.html'), 404
+@app.route('/enviar', methods=['POST'])
+def enviar():
+    nova = Avaliacao(
+        nome=request.form.get('nome'),
+        qualidade=request.form.get('qualidade'),
+        variedade=request.form.get('variedade'),
+        apresentacao=request.form.get('apresentacao'),
+        reposicao=request.form.get('reposicao'),
+        atendimento=request.form.get('atendimento'),
+        comentario=request.form.get('comentario'),
+        pratos_favoritos=request.form.get('pratos_favoritos'),
+        sugestao_pratos=request.form.get('sugestao_pratos'),
+        frequencia=request.form.get('frequencia'),
+        permissao_contato=request.form.get('permissao_contato') == 'sim',
+        telefone=request.form.get('telefone')
+    )
+    nova.aprovada = True
+    db.session.add(nova)
+    db.session.commit()
+    return redirect(url_for('avaliar'))
 
-# Manipulador de erro 500
-@app.errorhandler(500)
-def internal_server_error(e):
-    """Renderiza página de erro 500 personalizada"""
-    return render_template('500.html'), 500
+# Login do administrador
+@app.route('/admin', methods=['GET', 'POST'])
+def admin_login():
+    if request.method == 'POST':
+        senha = request.form.get('senha')
+        if senha == 'suasenha123':  # Altere por uma senha segura
+            session['admin'] = True
+            return redirect('/avaliacoes')
+    return render_template('admin_login.html')
 
-# Criar tabelas do banco de dados
+# Página privada para ver avaliações
+@app.route('/avaliacoes')
+def admin_avaliacoes():
+    if not session.get('admin'):
+        return redirect('/admin')
+    avaliacoes = Avaliacao.query.order_by(Avaliacao.data_avaliacao.desc()).all()
+    return render_template('admin_avaliacoes.html', avaliacoes=avaliacoes)
+
+# Criar banco e avaliações de exemplo
 with app.app_context():
     db.create_all()
 
-    # Verificar se já existem avaliações no banco de dados
     if Avaliacao.query.count() == 0:
-        avaliacao1 = Avaliacao(
-            nome="Maria Silva",
-            email="maria@exemplo.com",
-            telefone="11999999999",
-            qualidade=5,
-            variedade=5,
-            apresentacao=5,
-            reposicao=4,
-            atendimento=5,
-            comentario="O buffet do Coco Bambu Alphaville superou todas as minhas expectativas!",
-            pratos_favoritos="Camarões Grelhados, Moqueca de Peixe",
-            frequencia="mensalmente",
-            permissao_contato=True
-        )
-        avaliacao1.aprovada = True
-
-        avaliacao2 = Avaliacao(
-            nome="João Santos",
-            email="joao@exemplo.com",
-            telefone="11888888888",
-            qualidade=4,
-            variedade=5,
-            apresentacao=4,
-            reposicao=3,
-            atendimento=5,
-            comentario="Excelente variedade de frutos do mar.",
-            pratos_favoritos="Paella de Frutos do Mar, Moqueca de Peixe",
-            frequencia="raramente",
-            permissao_contato=False
-        )
-        avaliacao2.aprovada = True
-
-        avaliacao3 = Avaliacao(
-            nome="Ana Oliveira",
-            email="ana@exemplo.com",
-            telefone="11777777777",
-            qualidade=5,
-            variedade=4,
-            apresentacao=5,
-            reposicao=5,
-            atendimento=5,
-            comentario="Frequento o Coco Bambu há anos. Qualidade incrível!",
-            pratos_favoritos="Salmão ao Molho de Maracujá, Lagosta Grelhada",
-            frequencia="semanalmente",
-            permissao_contato=True
-        )
-        avaliacao3.aprovada = True
-
-        db.session.add_all([avaliacao1, avaliacao2, avaliacao3])
+        exemplo = [
+            Avaliacao(
+                nome="Maria Silva",
+                qualidade=5,
+                variedade=5,
+                apresentacao=5,
+                reposicao=4,
+                atendimento=5,
+                comentario="Excelente buffet!",
+                pratos_favoritos="Camarões Grelhados",
+                sugestao_pratos="Bobó de Camarão",
+                frequencia="frequentemente",
+                permissao_contato=True,
+                telefone="11999999999"
+            )
+        ]
+        for a in exemplo:
+            a.aprovada = True
+            db.session.add(a)
         db.session.commit()
 
-# Executar aplicação
+# Rodar o app
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
