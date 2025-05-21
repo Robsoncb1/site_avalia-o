@@ -1,0 +1,655 @@
+/* Melhorias de acessibilidade para o site Coco Bambu Alphaville */
+
+/* Foco visível para navegação por teclado */
+:focus {
+  outline: 3px solid var(--secondary-color);
+  outline-offset: 2px;
+}
+
+/* Melhorar contraste para textos */
+body {
+  color: var(--text-color);
+}
+
+.hero {
+  color: var(--light-text);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+/* Aumentar contraste de links */
+a {
+  color: var(--primary-color);
+  text-decoration: underline;
+}
+
+a:hover, a:focus {
+  color: var(--secondary-color);
+  text-decoration: underline;
+}
+
+/* Melhorar contraste de botões */
+.btn {
+  font-weight: 700;
+  border: 2px solid transparent;
+}
+
+.btn:focus {
+  box-shadow: 0 0 0 3px rgba(0, 121, 107, 0.4);
+}
+
+.btn-outline {
+  border: 2px solid var(--light-text);
+}
+
+/* Melhorar acessibilidade de formulários */
+label {
+  font-weight: 600;
+  color: var(--text-color);
+  margin-bottom: 0.5rem;
+  display: inline-block;
+}
+
+.form-control {
+  border: 2px solid #ddd;
+}
+
+.form-control:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(0, 121, 107, 0.2);
+}
+
+/* Mensagens de erro com melhor contraste */
+.error-message {
+  color: var(--error-color);
+  font-weight: 600;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  background-color: rgba(211, 47, 47, 0.1);
+  border-left: 4px solid var(--error-color);
+}
+
+/* Mensagens de sucesso com melhor contraste */
+.success-message {
+  color: var(--success-color);
+  font-weight: 600;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  background-color: rgba(56, 142, 60, 0.1);
+  border-left: 4px solid var(--success-color);
+}
+
+/* Melhorar acessibilidade do sistema de avaliação */
+.rating {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+}
+
+.rating input {
+  position: absolute;
+  left: -9999px;
+}
+
+.rating label {
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  background-image: url('../img/star-empty.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  transition: var(--transition);
+  position: relative;
+}
+
+.rating label:hover,
+.rating label:hover ~ label,
+.rating input:checked ~ label {
+  background-image: url('../img/star-filled.svg');
+}
+
+.rating label:focus {
+  outline: 2px solid var(--secondary-color);
+  outline-offset: 2px;
+}
+
+/* Adicionar texto para leitores de tela */
+.rating label::after {
+  content: attr(title);
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* Melhorar acessibilidade de checkboxes */
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.checkbox-item input[type="checkbox"] {
+  margin-right: 0.5rem;
+  width: 18px;
+  height: 18px;
+}
+
+.checkbox-item label {
+  margin-bottom: 0;
+}
+
+/* Skip to content link para acessibilidade */
+.skip-to-content {
+  position: absolute;
+  left: -9999px;
+  top: 1rem;
+  background: var(--primary-color);
+  color: var(--light-text);
+  padding: 1rem;
+  z-index: 9999;
+  text-decoration: none;
+}
+
+.skip-to-content:focus {
+  left: 1rem;
+}
+
+/* Melhorar acessibilidade de tabelas */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.5rem;
+}
+
+th {
+  background-color: var(--primary-color);
+  color: var(--light-text);
+  font-weight: 600;
+  text-align: left;
+  padding: 0.75rem;
+}
+
+td {
+  padding: 0.75rem;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Melhorar acessibilidade de modais */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
+  overflow-y: auto;
+}
+
+.modal-content {
+  background-color: var(--card-color);
+  margin: 10% auto;
+  padding: 2rem;
+  border-radius: var(--border-radius);
+  max-width: 800px;
+  position: relative;
+}
+
+.close-modal {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #777;
+  transition: var(--transition);
+}
+
+.close-modal:hover {
+  color: var(--text-color);
+}
+
+/* Melhorar acessibilidade de paginação */
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.pagination-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin: 0 0.25rem;
+  border-radius: var(--border-radius);
+  background-color: var(--card-color);
+  color: var(--text-color);
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.pagination-item:hover,
+.pagination-item:focus {
+  background-color: var(--primary-color);
+  color: var(--light-text);
+}
+
+.pagination-item.active {
+  background-color: var(--primary-color);
+  color: var(--light-text);
+  font-weight: 600;
+}
+
+.pagination-item.next,
+.pagination-item.prev {
+  width: auto;
+  padding: 0 1rem;
+}
+
+/* Melhorar acessibilidade de alertas */
+.alert {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: var(--border-radius);
+  font-weight: 500;
+}
+
+.alert-success {
+  background-color: rgba(56, 142, 60, 0.1);
+  color: var(--success-color);
+  border-left: 4px solid var(--success-color);
+}
+
+.alert-error {
+  background-color: rgba(211, 47, 47, 0.1);
+  color: var(--error-color);
+  border-left: 4px solid var(--error-color);
+}
+
+.alert-info {
+  background-color: rgba(2, 136, 209, 0.1);
+  color: #0288d1;
+  border-left: 4px solid #0288d1;
+}
+
+/* Melhorar acessibilidade de tooltips */
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltip-text {
+  visibility: hidden;
+  width: 200px;
+  background-color: var(--text-color);
+  color: var(--light-text);
+  text-align: center;
+  border-radius: var(--border-radius);
+  padding: 0.5rem;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip:hover .tooltip-text,
+.tooltip:focus .tooltip-text,
+.tooltip:focus-within .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Melhorar acessibilidade de imagens */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Melhorar acessibilidade de listas */
+ul, ol {
+  padding-left: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+li {
+  margin-bottom: 0.5rem;
+}
+
+/* Melhorar acessibilidade de cabeçalhos */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--primary-color);
+  margin-top: 0;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+/* Melhorar acessibilidade de texto */
+p {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+/* Melhorar acessibilidade de citações */
+blockquote {
+  border-left: 4px solid var(--primary-color);
+  padding-left: 1rem;
+  margin-left: 0;
+  margin-right: 0;
+  font-style: italic;
+}
+
+/* Melhorar acessibilidade de código */
+code {
+  font-family: monospace;
+  background-color: #f5f5f5;
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+}
+
+/* Melhorar acessibilidade de separadores */
+hr {
+  border: 0;
+  border-top: 1px solid #ddd;
+  margin: 2rem 0;
+}
+
+/* Melhorar acessibilidade de abreviações */
+abbr[title] {
+  text-decoration: underline dotted;
+  cursor: help;
+}
+
+/* Melhorar acessibilidade de definições */
+dfn {
+  font-style: italic;
+}
+
+/* Melhorar acessibilidade de texto destacado */
+mark {
+  background-color: var(--accent-color);
+  padding: 0.2rem 0.4rem;
+}
+
+/* Melhorar acessibilidade de texto pequeno */
+small {
+  font-size: 0.8rem;
+}
+
+/* Melhorar acessibilidade de texto forte */
+strong {
+  font-weight: 700;
+}
+
+/* Melhorar acessibilidade de texto enfatizado */
+em {
+  font-style: italic;
+}
+
+/* Melhorar acessibilidade de texto deletado */
+del {
+  text-decoration: line-through;
+}
+
+/* Melhorar acessibilidade de texto inserido */
+ins {
+  text-decoration: underline;
+}
+
+/* Melhorar acessibilidade de texto subscrito */
+sub {
+  vertical-align: sub;
+  font-size: smaller;
+}
+
+/* Melhorar acessibilidade de texto sobrescrito */
+sup {
+  vertical-align: super;
+  font-size: smaller;
+}
+
+/* Melhorar acessibilidade de texto pré-formatado */
+pre {
+  background-color: #f5f5f5;
+  padding: 1rem;
+  border-radius: var(--border-radius);
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+}
+
+/* Melhorar acessibilidade de texto de endereço */
+address {
+  font-style: normal;
+  margin-bottom: 1.5rem;
+}
+
+/* Melhorar acessibilidade de texto de citação */
+cite {
+  font-style: italic;
+}
+
+/* Melhorar acessibilidade de texto de teclado */
+kbd {
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  padding: 0.2rem 0.4rem;
+  font-family: monospace;
+}
+
+/* Melhorar acessibilidade de texto de variável */
+var {
+  font-style: italic;
+}
+
+/* Melhorar acessibilidade de texto de amostra */
+samp {
+  font-family: monospace;
+}
+
+/* Melhorar acessibilidade de texto de saída */
+output {
+  font-family: monospace;
+}
+
+/* Melhorar acessibilidade de texto de tempo */
+time {
+  font-style: italic;
+}
+
+/* Melhorar acessibilidade de texto de progresso */
+progress {
+  width: 100%;
+  height: 10px;
+  border-radius: 5px;
+  background-color: #f5f5f5;
+  overflow: hidden;
+}
+
+progress::-webkit-progress-bar {
+  background-color: #f5f5f5;
+}
+
+progress::-webkit-progress-value {
+  background-color: var(--primary-color);
+}
+
+progress::-moz-progress-bar {
+  background-color: var(--primary-color);
+}
+
+/* Melhorar acessibilidade de texto de medidor */
+meter {
+  width: 100%;
+  height: 10px;
+  border-radius: 5px;
+  background-color: #f5f5f5;
+}
+
+meter::-webkit-meter-bar {
+  background-color: #f5f5f5;
+}
+
+meter::-webkit-meter-optimum-value {
+  background-color: var(--success-color);
+}
+
+meter::-webkit-meter-suboptimum-value {
+  background-color: var(--accent-color);
+}
+
+meter::-webkit-meter-even-less-good-value {
+  background-color: var(--error-color);
+}
+
+/* Melhorar acessibilidade de texto de detalhes */
+details {
+  margin-bottom: 1.5rem;
+}
+
+summary {
+  cursor: pointer;
+  font-weight: 600;
+  padding: 0.5rem 0;
+}
+
+/* Melhorar acessibilidade de texto de figura */
+figure {
+  margin: 0 0 1.5rem;
+}
+
+figcaption {
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 0.5rem;
+  text-align: center;
+}
+
+/* Melhorar acessibilidade de texto de legenda */
+caption {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 0.5rem;
+  text-align: left;
+}
+
+/* Melhorar acessibilidade de texto de botão */
+button {
+  cursor: pointer;
+}
+
+/* Melhorar acessibilidade de texto de campo */
+fieldset {
+  border: 1px solid #ddd;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border-radius: var(--border-radius);
+}
+
+legend {
+  font-weight: 600;
+  padding: 0 0.5rem;
+}
+
+/* Melhorar acessibilidade de texto de opção */
+optgroup {
+  font-weight: 600;
+}
+
+/* Melhorar acessibilidade de texto de seleção */
+::selection {
+  background-color: var(--primary-color);
+  color: var(--light-text);
+}
+
+/* Melhorar acessibilidade de texto de placeholder */
+::placeholder {
+  color: #999;
+  opacity: 1;
+}
+
+/* Melhorar acessibilidade de texto de barra de rolagem */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #f5f5f5;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #ddd;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #ccc;
+}
+
+/* Melhorar acessibilidade para dispositivos móveis */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 15px;
+  }
+  
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .hero h2 {
+    font-size: 1.8rem;
+  }
+  
+  .hero p {
+    font-size: 1rem;
+  }
+  
+  .section-title h2 {
+    font-size: 1.8rem;
+  }
+  
+  .modal-content {
+    margin: 5% auto;
+    padding: 1.5rem;
+    width: 90%;
+  }
+}
+
+/* Melhorar acessibilidade para dispositivos de alto contraste */
+@media (forced-colors: active) {
+  .btn {
+    border: 2px solid ButtonText;
+  }
+  
+  .card {
+    border: 1px solid ButtonText;
+  }
+  
+  .form-control {
+    border: 1px solid ButtonText;
+  }
+  
+  .rating label {
+    border: 1px solid ButtonText;
+  }
+}
+
+/* Melhorar acessibilidade para preferências de movimento reduzido */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

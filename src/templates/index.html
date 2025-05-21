@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+
+{% block title %}Coco Bambu Alphaville - Home{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-content animate-on-scroll">
+            <h2>Experimente o Melhor Buffet de Frutos do Mar</h2>
+            <p>Sabores autênticos da culinária brasileira com um toque sofisticado. Venha conhecer o buffet do Coco Bambu Alphaville e compartilhe sua experiência.</p>
+            <div class="hero-buttons">
+                <a href="{{ url_for('avaliacao.avaliar') }}" class="btn">Avaliar Buffet</a>
+                <a href="{{ url_for('menu') }}" class="btn btn-outline">Ver Menu</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Destaques Section -->
+<section class="section-padding">
+    <div class="container">
+        <div class="section-title animate-on-scroll">
+            <h2>Destaques do Buffet</h2>
+            <p>Conheça algumas das opções mais elogiadas pelos nossos clientes</p>
+        </div>
+        
+        <div class="grid animate-on-scroll">
+            <div class="card">
+                <img src="{{ url_for('static', filename='img/destaque1.jpg') }}" alt="Camarões Grelhados" class="card-img">
+                <div class="card-content">
+                    <h3 class="card-title">Camarões Grelhados</h3>
+                    <p>Camarões frescos grelhados com ervas finas e azeite de oliva extra virgem.</p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <img src="{{ url_for('static', filename='img/destaque2.jpg') }}" alt="Moqueca de Peixe" class="card-img">
+                <div class="card-content">
+                    <h3 class="card-title">Moqueca de Peixe</h3>
+                    <p>Tradicional moqueca preparada com peixe fresco, leite de coco e azeite de dendê.</p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <img src="{{ url_for('static', filename='img/destaque3.jpg') }}" alt="Arroz de Polvo" class="card-img">
+                <div class="card-content">
+                    <h3 class="card-title">Arroz de Polvo</h3>
+                    <p>Arroz cremoso preparado com polvo macio e temperos especiais da casa.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Avaliações Recentes Section -->
+<section class="section-padding bg-light">
+    <div class="container">
+        <div class="section-title animate-on-scroll">
+            <h2>Avaliações Recentes</h2>
+            <p>Veja o que nossos clientes estão dizendo sobre o buffet</p>
+        </div>
+        
+        <div class="grid animate-on-scroll">
+            <div class="feedback-item">
+                <div class="feedback-header">
+                    <span class="feedback-author">Maria Silva</span>
+                    <span class="feedback-date">15/05/2025</span>
+                </div>
+                <div class="feedback-rating">
+                    <i class="star fas fa-star"></i>
+                    <i class="star fas fa-star"></i>
+                    <i class="star fas fa-star"></i>
+                    <i class="star fas fa-star"></i>
+                    <i class="star fas fa-star"></i>
+                </div>
+                <p class="feedback-text">"O buffet do Coco Bambu Alphaville superou todas as minhas expectativas! Os camarões estavam fresquíssimos e o arroz de polvo é simplesmente divino. Ambiente agradável e atendimento impecável. Recomendo!"</p>
+            </div>
+            
+            <div class="feedback-item">
+                <div class="feedback-header">
+                    <span class="feedback-author">João Santos</span>
+                    <span class="feedback-date">10/05/2025</span>
+                </div>
+                <div class="feedback-rating">
+                    <i class="star fas fa-star"></i>
+                    <i class="star fas fa-star"></i>
+                    <i class="star fas fa-star"></i>
+                    <i class="star fas fa-star"></i>
+                    <i class="star far fa-star"></i>
+                </div>
+                <p class="feedback-text">"Excelente variedade de frutos do mar. A moqueca de peixe estava deliciosa e o atendimento foi muito atencioso. Só achei que poderia ter mais opções de sobremesas no buffet."</p>
+            </div>
+            
+            <div class="feedback-item">
+                <div class="feedback-header">
+                    <span class="feedback-author">Ana Oliveira</span>
+                    <span class="feedback-date">05/05/2025</span>
+                </div>
+                <div class="feedback-rating">
+                    <i class="star fas fa-star"></i>
+                    <i class="star fas fa-star"></i>
+                    <i class="star fas fa-star"></i>
+                    <i class="star fas fa-star"></i>
+                    <i class="star fas fa-star"></i>
+                </div>
+                <p class="feedback-text">"Frequento o Coco Bambu há anos e o buffet sempre mantém a qualidade. Os pratos são bem apresentados e o sabor é incrível. As opções de peixes e camarões são as melhores da região!"</p>
+            </div>
+        </div>
+        
+        <div class="text-center mt-4 animate-on-scroll">
+            <a href="{{ url_for('feedback') }}" class="btn">Ver Todas as Avaliações</a>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action Section -->
+<section class="section-padding">
+    <div class="container">
+        <div class="cta-box animate-on-scroll">
+            <h2>Sua Opinião é Importante para Nós!</h2>
+            <p>Ajude-nos a melhorar ainda mais a experiência do nosso buffet compartilhando sua avaliação e sugestões.</p>
+            <a href="{{ url_for('avaliar') }}" class="btn">Avaliar Agora</a>
+        </div>
+    </div>
+</section>
+
+<!-- Informações Section -->
+<section class="section-padding bg-light">
+    <div class="container">
+        <div class="section-title animate-on-scroll">
+            <h2>Informações do Buffet</h2>
+            <p>Tudo o que você precisa saber sobre nosso buffet</p>
+        </div>
+        
+        <div class="info-grid animate-on-scroll">
+            <div class="info-item">
+                <div class="info-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <h3>Horário</h3>
+                <p>Todos os dias<br>11:30 às 15:30</p>
+            </div>
+            
+            <div class="info-item">
+                <div class="info-icon">
+                    <i class="fas fa-money-bill-wave"></i>
+                </div>
+                <h3>Preço</h3>
+                <p>Segunda a Sexta: R$ 89,90<br>Finais de Semana: R$ 109,90</p>
+            </div>
+            
+            <div class="info-item">
+                <div class="info-icon">
+                    <i class="fas fa-utensils"></i>
+                </div>
+                <h3>Variedade</h3>
+                <p>Mais de 30 opções<br>entre pratos quentes e frios</p>
+            </div>
+            
+            <div class="info-item">
+                <div class="info-icon">
+                    <i class="fas fa-glass-cheers"></i>
+                </div>
+                <h3>Bebidas</h3>
+                <p>Água e sucos inclusos<br>Outras bebidas à parte</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Adicionar classe para ativar animações quando elementos entrarem na viewport
+    document.addEventListener('DOMContentLoaded', function() {
+        const elements = document.querySelectorAll('.animate-on-scroll');
+        elements.forEach(element => {
+            element.classList.add('animate-fade-in');
+        });
+    });
+</script>
+{% endblock %}
