@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Coco Bambu Alphaville - Início{% endblock %}
+
+{% block content %}
+<section class="section-padding">
+    <div class="container">
+        <h2 class="section-title">Avaliações Recentes</h2>
+        {% if avaliacoes %}
+            <div class="avaliacoes-grid">
+                {% for avaliacao in avaliacoes %}
+                    <div class="card">
+                        <h4>{{ avaliacao.nome }}</h4>
+                        <p class="avaliacao-text">"{{ avaliacao.comentario }}"</p>
+                        <small><strong>Favoritos:</strong> {{ avaliacao.pratos_favoritos }}</small>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-center">Nenhuma avaliação encontrada.</p>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
