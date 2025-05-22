@@ -19,13 +19,16 @@ def avaliar():
 
 @app.route('/enviar', methods=['POST'])
 def enviar():
+    def safe_int(field):
+        return int(request.form.get(field)) if request.form.get(field) else 0
+
     nova = Avaliacao(
         nome=request.form.get('nome'),
-        qualidade=request.form.get('qualidade'),
-        variedade=request.form.get('variedade'),
-        apresentacao=request.form.get('apresentacao'),
-        reposicao=request.form.get('reposicao'),
-        atendimento=request.form.get('atendimento'),
+        qualidade=safe_int('qualidade'),
+        variedade=safe_int('variedade'),
+        apresentacao=safe_int('apresentacao'),
+        reposicao=safe_int('reposicao'),
+        atendimento=safe_int('atendimento'),
         comentario=request.form.get('comentario'),
         pratos_favoritos=request.form.get('pratos_favoritos'),
         sugestao_pratos=request.form.get('sugestao_pratos'),
