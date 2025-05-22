@@ -1,26 +1,85 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Coco Bambu{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Avaliação do Buffet{% endblock %}</title>
+    <meta name="description" content="Avalie o buffet do restaurante Coco Bambu Alphaville e envie suas sugestões.">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}" type="image/x-icon">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    {% block extra_css %}{% endblock %}
 </head>
 <body>
-    <header>
-        <div class="container">
-            <img src="{{ url_for('static', filename='img/logo-coco.png') }}" alt="Logo" height="60">
-        </div>
-    </header>
 
-    <main>
-        {% block content %}{% endblock %}
-    </main>
-
-    <footer>
-        <div class="container">
-            <p>&copy; {{ current_year }} Coco Bambu Alphaville. Todos os direitos reservados.</p>
+<!-- Header simplificado -->
+<header>
+    <div class="header-container container" style="display: flex; align-items: center; justify-content: space-between;">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='img/logo-coco.png') }}" alt="Logo Coco Bambu" style="height: 80px;">
         </div>
-    </footer>
+        <div style="flex: 1; text-align: center;">
+            <h1 style="color: white; font-size: 1.6rem; font-weight: 500;">Avaliação do Buffet</h1>
+        </div>
+    </div>
+</header>
+
+<!-- Main Content -->
+<main>
+    {% block content %}{% endblock %}
+</main>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Coco Bambu Alphaville</h3>
+                <p>Experimente o melhor da culinária brasileira em um ambiente sofisticado e acolhedor.</p>
+                <div class="social-links">
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="TripAdvisor"><i class="fab fa-tripadvisor"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-column">
+                <h3>Horário de Funcionamento do Buffet</h3>
+                <p>Segunda a Sexta: 12:00 às 15:00</p>
+                <p>Sábado, Domingo e Feriados: 12:00 às 16:00</p>
+                <p>* Buffet disponível todos os dias</p>
+            </div>
+
+            <div class="footer-column">
+                <h3>Contato</h3>
+                <p><i class="fas fa-map-marker-alt"></i> Alameda Rio Negro, 1000 - Alphaville, Barueri - SP</p>
+                <p><i class="fas fa-phone"></i> (11) 94379-5067</p>
+                <p><i class="fas fa-envelope"></i> alphaville@cocobambu.com</p>
+            </div>
+        </div>
+
+        <div class="copyright">
+            <p>&copy; 2025 Coco Bambu Alphaville. Todos os direitos reservados.</p>
+        </div>
+    </div>
+</footer>
+
+<!-- JavaScript -->
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% block extra_js %}{% endblock %}
+
 </body>
 </html>
