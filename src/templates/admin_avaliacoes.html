@@ -1,36 +1,115 @@
 {% extends "base.html" %}
-{% block title %}Painel de Avaliações{% endblock %}
+
+{% block title %}Admin - Avaliações Recebidas{% endblock %}
+
 {% block content %}
 <section class="section-padding">
     <div class="container">
-        <h2 class="section-title">Painel do Administrador</h2>
-        {% if avaliacoes %}
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Data</th>
-                        <th>Nome</th>
-                        <th>Comentário</th>
-                        <th>Favoritos</th>
-                        <th>Nota Média</th>
-                        <th>Telefone</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for a in avaliacoes %}
-                    <tr>
-                        <td>{{ a.data_avaliacao.strftime('%d/%m/%Y') }}</td>
-                        <td>{{ a.nome }}</td>
-                        <td>{{ a.comentario }}</td>
-                        <td>{{ a.pratos_favoritos }}</td>
-                        <td>{{ a.media }}</td>
-                        <td>{{ a.telefone if a.permissao_contato else 'N/A' }}</td>
-                    </tr>
+        <h2 class="section-title">Avaliações Recebidas</h2>
+
+        <!-- Filtros -->
+        <form method="GET" class="form-group" style="display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem;">
+            <select name="data" class="form-control" style="max-width: 200px;">
+                <option value="">Todas as Datas</option>
+                <option value="7" {% if filtro_data == '7' %}selected{% endif %}>Últimos 7 dias</option>
+                <option value="30" {% if filtro_data == '30' %}selected{% endif %}>Últimos 30 dias</option>
+                <option value="90" {% if filtro_data == '90' %}selected{% endif %}>Últimos 90 dias</option>
+            </select>
+
+            <select name="nota" class="form-control" style="max-width: 200px;">
+                <option value="">Todas as Notas</option>
+                <option value="5" {% if filtro_nota == '5' %}selected{% endif %}>5 estrelas (em algum critério)</option>
+                <option value="4" {% if filtro_nota == '4' %}selected{% endif %}>4 estrelas ou mais</option>
+                <option value="3" {% if filtro_nota == '3' %}selected{% endif %}>3 estrelas ou mais</option>
+                <option value="2" {% if filtro_nota == '2' %}selected{% endif %}>2 estrelas ou mais</option>
+                <option value="1" {% if filtro_nota == '1' %}selected{% endif %}>1 estrela ou mais</option>
+            </select>
+
+            <button type="submit" class="btn">Filtrar</button>
+        </form>
+
+        {% for a in avaliacoes %}
+<div class="card mb-4 p-4 shadow-sm rounded" style="border: 1px solid #ddd;">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <div>
+            <h5 class="mb-0">{{ a.nome }}</h5>
+            <small class="text-muted">{{ a.data_avaliacao.strftime('%d/%m/%Y') }}</small>
+        </div>
+        <div>
+            {% for i in range(1, 6) %}
+                {% if i <= a.media_geral %}
+                    <span style="color: #FFD700;">★</span>
+                {% else %}
+                    <span style="color: #ccc;">★</span>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="mb-2">
+        <p><strong>Comentário:</strong> {{ a.comentario or "Sem comentário." }}</p>
+        <p><strong>Pratos Favoritos:</strong> {{ a.pratos_favoritos or "Não informado." }}</p>
+        <p><strong>Sugestão de Novos Pratos:</strong> {{ a.sugestao_pratos or "Nenhuma." }}</p>
+        <p><strong>Frequência:</strong> {{ a.frequencia|capitalize }}</p>
+        <p><strong>Contato:</strong> {{ 'Sim' if a.permissao_contato else 'Não' }}{% if a.telefone %} - {{ a.telefone }}{% endif %}</p>
+    </div>
+
+    <div>
+        {% for campo, valor in [
+            ('Qualidade', a.qualidade),
+            ('Variedade', a.variedade),
+            ('Apresentação', a.apresentacao),
+            ('Reposição', a.reposicao),
+            ('Atendimento', a.atendimento)
+        ] %}
+            <p style="margin-bottom: 5px;">
+                <strong>{{ campo }}:</strong>
+                {% for i in range(1, 6) %}
+                    {% if i <= valor %}
+                        <span style="color: #FFD700;">★</span>
+                    {% else %}
+                        <span style="color: #ccc;">★</span>
+                    {% endif %}
+                {% endfor %}
+            </p>
+        {% endfor %}
+    </div>
+</div>
+{% endfor %}
+                    </div>
+                </div>
+
+                <div class="feedback-body">
+                    <p><strong>Comentário:</strong> {{ a.comentario or "Sem comentário." }}</p>
+                    <p><strong>Pratos Favoritos:</strong> {{ a.pratos_favoritos or "Não informado." }}</p>
+                    <p><strong>Sugestão de Novos Pratos:</strong> {{ a.sugestao_pratos or "Nenhuma." }}</p>
+                    <p><strong>Permissão para Contato:</strong> {{ 'Sim' if a.permissao_contato else 'Não' }}</p>
+                    {% if a.telefone %}<p><strong>Telefone:</strong> {{ a.telefone }}</p>{% endif %}
+                </div>
+
+                <div class="feedback-body">
+                    {% for campo, valor in [
+                        ('Qualidade', a.qualidade),
+                        ('Variedade', a.variedade),
+                        ('Apresentação', a.apresentacao),
+                        ('Reposição', a.reposicao),
+                        ('Atendimento', a.atendimento)
+                    ] %}
+                        <p><strong>{{ campo }}:</strong>
+                            {% for i in range(1, 6) %}
+                                {% if i <= valor %}
+                                    <span class="star">★</span>
+                                {% else %}
+                                    <span class="star" style="color: #ccc;">★</span>
+                                {% endif %}
+                            {% endfor %}
+                        </p>
                     {% endfor %}
-                </tbody>
-            </table>
+                </div>
+            </div>
+            {% endfor %}
         {% else %}
-            <p>Nenhuma avaliação cadastrada.</p>
+            <p class="text-center">Nenhuma avaliação recebida com os critérios selecionados.</p>
         {% endif %}
     </div>
 </section>

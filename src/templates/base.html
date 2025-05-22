@@ -24,12 +24,10 @@
 </head>
 <body>
 
-<!-- Header com apenas logo centralizada -->
-<header style="background-color: #222; padding: 0.5rem 0;">
-    <div class="header-container container" style="display: flex; align-items: center; justify-content: center;">
-        <div class="logo">
-            <img src="{{ url_for('static', filename='img/logo-coco.png') }}" alt="Logo Coco Bambu" style="height: 60px;">
-        </div>
+<!-- Header com logo centralizada e altura ajustada -->
+<header style="background-color: #3b3b3b; padding: 0.5rem 0;">
+    <div class="header-container container" style="display: flex; align-items: center; justify-content: center; height: 60px;">
+        <img src="{{ url_for('static', filename='img/logo-coco.png') }}" alt="Logo Coco Bambu" style="height: 48px;">
     </div>
 </header>
 
@@ -64,7 +62,6 @@
                 <h3>Contato</h3>
                 <p><i class="fas fa-map-marker-alt"></i> Alameda Rio Negro, 1000 - Alphaville, Barueri - SP</p>
                 <p><i class="fas fa-phone"></i> (11) 94379-5067</p>
-                <p><i class="fas fa-envelope"></i> alphaville@cocobambu.com</p>
             </div>
         </div>
 
