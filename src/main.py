@@ -1,5 +1,6 @@
 import sys
 import os
+from datetime import datetime
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
 from flask import Flask, render_template, request, redirect, url_for, session
@@ -19,28 +20,29 @@ def avaliar():
 
 @app.route('/enviar', methods=['POST'])
 def enviar():
-    def safe_int(field):
-        return int(request.form.get(field)) if request.form.get(field) else 0
-
-    nova = Avaliacao(
-        nome=request.form.get('nome'),
-        qualidade=safe_int('qualidade'),
-        variedade=safe_int('variedade'),
-        apresentacao=safe_int('apresentacao'),
-        reposicao=safe_int('reposicao'),
-        atendimento=safe_int('atendimento'),
-        comentario=request.form.get('comentario'),
-        pratos_favoritos=request.form.get('pratos_favoritos'),
-        sugestao_pratos=request.form.get('sugestao_pratos'),
-        frequencia=request.form.get('frequencia'),
-        permissao_contato=request.form.get('permissao_contato') == 'sim',
-        telefone=request.form.get('telefone')
-    )
-    nova.aprovada = True
-    db.session.add(nova)
-    db.session.commit()
-
-    session['sucesso'] = True
+    try:
+        nova = Avaliacao(
+            nome=request.form.get('nome'),
+            qualidade=int(request.form.get('qualidade')),
+            variedade=int(request.form.get('variedade')),
+            apresentacao=int(request.form.get('apresentacao')),
+            reposicao=int(request.form.get('reposicao')),
+            atendimento=int(request.form.get('atendimento')),
+            comentario=request.form.get('comentario'),
+            pratos_favoritos=request.form.get('pratos_favoritos'),
+            sugestao_pratos=request.form.get('sugestao_pratos'),
+            frequencia=request.form.get('frequencia'),
+            permissao_contato=request.form.get('permissao_contato') == 'sim',
+            telefone=request.form.get('telefone'),
+            data_avaliacao=datetime.now(),
+            aprovada=True
+        )
+        db.session.add(nova)
+        db.session.commit()
+        session['sucesso'] = True
+    except Exception as e:
+        db.session.rollback()
+        print(f"Erro ao salvar avaliação: {e}")
     return redirect(url_for('avaliar'))
 
 @app.route('/admin', methods=['GET', 'POST'])
@@ -59,9 +61,9 @@ def admin_avaliacoes():
     avaliacoes = Avaliacao.query.order_by(Avaliacao.data_avaliacao.desc()).all()
     return render_template('admin_avaliacoes.html', avaliacoes=avaliacoes)
 
+# Banco e exemplo
 with app.app_context():
     db.create_all()
-
     if Avaliacao.query.count() == 0:
         exemplo = Avaliacao(
             nome="Maria Silva",
@@ -75,9 +77,10 @@ with app.app_context():
             sugestao_pratos="Bobó de Camarão",
             frequencia="frequentemente",
             permissao_contato=True,
-            telefone="11999999999"
+            telefone="11999999999",
+            data_avaliacao=datetime.now(),
+            aprovada=True
         )
-        exemplo.aprovada = True
         db.session.add(exemplo)
         db.session.commit()
 
