@@ -1,10 +1,11 @@
 import sys
 import os
 from datetime import datetime
-sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
-
 from flask import Flask, render_template, request, redirect, url_for, session
 from src.models.avaliacao import db, Avaliacao
+
+# Corrige o caminho da aplicação
+sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'coco_bambu_alphaville_2025'
@@ -13,11 +14,13 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
 
+# Página de avaliação (pública)
 @app.route('/')
 def avaliar():
     sucesso = session.pop('sucesso', False)
     return render_template('avaliar.html', sucesso=sucesso)
 
+# Rota de envio da avaliação
 @app.route('/enviar', methods=['POST'])
 def enviar():
     try:
@@ -33,7 +36,7 @@ def enviar():
             sugestao_pratos=request.form.get('sugestao_pratos'),
             frequencia=request.form.get('frequencia'),
             permissao_contato=request.form.get('permissao_contato') == 'sim',
-            telefone=request.form.get('telefone'),
+            telefone=request.form.get('telefone') or None,
             data_avaliacao=datetime.now(),
             aprovada=True
         )
@@ -41,10 +44,12 @@ def enviar():
         db.session.commit()
         session['sucesso'] = True
     except Exception as e:
-        db.session.rollback()
-        print(f"Erro ao salvar avaliação: {e}")
+        print("Erro ao salvar avaliação:", e)
+        session['sucesso'] = False
+
     return redirect(url_for('avaliar'))
 
+# Rota de login do admin
 @app.route('/admin', methods=['GET', 'POST'])
 def admin_login():
     if request.method == 'POST':
@@ -54,6 +59,7 @@ def admin_login():
             return redirect('/avaliacoes')
     return render_template('admin_login.html')
 
+# Página do admin com as avaliações
 @app.route('/avaliacoes')
 def admin_avaliacoes():
     if not session.get('admin'):
@@ -61,7 +67,7 @@ def admin_avaliacoes():
     avaliacoes = Avaliacao.query.order_by(Avaliacao.data_avaliacao.desc()).all()
     return render_template('admin_avaliacoes.html', avaliacoes=avaliacoes)
 
-# Banco e exemplo
+# Criação automática do banco e exemplo inicial
 with app.app_context():
     db.create_all()
     if Avaliacao.query.count() == 0:
@@ -78,11 +84,12 @@ with app.app_context():
             frequencia="frequentemente",
             permissao_contato=True,
             telefone="11999999999",
-            data_avaliacao=datetime.now(),
-            aprovada=True
+            aprovada=True,
+            data_avaliacao=datetime.now()
         )
         db.session.add(exemplo)
         db.session.commit()
 
+# Execução local
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
