@@ -14,7 +14,8 @@ db.init_app(app)
 
 @app.route('/')
 def avaliar():
-    return render_template('avaliar.html')
+    sucesso = session.pop('sucesso', False)
+    return render_template('avaliar.html', sucesso=sucesso)
 
 @app.route('/enviar', methods=['POST'])
 def enviar():
@@ -35,6 +36,8 @@ def enviar():
     nova.aprovada = True
     db.session.add(nova)
     db.session.commit()
+
+    session['sucesso'] = True
     return redirect(url_for('avaliar'))
 
 @app.route('/admin', methods=['GET', 'POST'])
