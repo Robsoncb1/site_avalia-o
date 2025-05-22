@@ -1,10 +1,9 @@
 import sys
 import os
 from datetime import datetime
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 from src.models.avaliacao import db, Avaliacao
 
-# Corrige o caminho da aplicação
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
 app = Flask(__name__)
@@ -14,23 +13,28 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
 
-# Página de avaliação (pública)
 @app.route('/')
 def avaliar():
     sucesso = session.pop('sucesso', False)
     return render_template('avaliar.html', sucesso=sucesso)
 
-# Rota de envio da avaliação
 @app.route('/enviar', methods=['POST'])
 def enviar():
     try:
+        # Verificação obrigatória dos campos de nota
+        obrigatorios = ['qualidade', 'variedade', 'apresentacao', 'reposicao', 'atendimento']
+        for campo in obrigatorios:
+            if not request.form.get(campo):
+                flash(f'O campo {campo} é obrigatório.', 'danger')
+                return redirect(url_for('avaliar'))
+
         nova = Avaliacao(
             nome=request.form.get('nome'),
-            qualidade=int(request.form.get('qualidade')),
-            variedade=int(request.form.get('variedade')),
-            apresentacao=int(request.form.get('apresentacao')),
-            reposicao=int(request.form.get('reposicao')),
-            atendimento=int(request.form.get('atendimento')),
+            qualidade=int(request.form['qualidade']),
+            variedade=int(request.form['variedade']),
+            apresentacao=int(request.form['apresentacao']),
+            reposicao=int(request.form['reposicao']),
+            atendimento=int(request.form['atendimento']),
             comentario=request.form.get('comentario'),
             pratos_favoritos=request.form.get('pratos_favoritos'),
             sugestao_pratos=request.form.get('sugestao_pratos'),
@@ -49,7 +53,6 @@ def enviar():
 
     return redirect(url_for('avaliar'))
 
-# Rota de login do admin
 @app.route('/admin', methods=['GET', 'POST'])
 def admin_login():
     if request.method == 'POST':
@@ -59,7 +62,6 @@ def admin_login():
             return redirect('/avaliacoes')
     return render_template('admin_login.html')
 
-# Página do admin com as avaliações
 @app.route('/avaliacoes')
 def admin_avaliacoes():
     if not session.get('admin'):
@@ -67,7 +69,6 @@ def admin_avaliacoes():
     avaliacoes = Avaliacao.query.order_by(Avaliacao.data_avaliacao.desc()).all()
     return render_template('admin_avaliacoes.html', avaliacoes=avaliacoes)
 
-# Criação automática do banco e exemplo inicial
 with app.app_context():
     db.create_all()
     if Avaliacao.query.count() == 0:
@@ -90,6 +91,5 @@ with app.app_context():
         db.session.add(exemplo)
         db.session.commit()
 
-# Execução local
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
