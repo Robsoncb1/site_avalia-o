@@ -16,7 +16,7 @@
             {% for item in ['Qualidade', 'Variedade', 'Apresentação', 'Reposição', 'Atendimento'] %}
             <div class="form-group">
                 <label>{{ item }}:</label>
-                <div class="rating">
+                <div class="rating d-flex justify-content-start">
                     {% for i in range(5, 0, -1) %}
                         <input type="radio" name="{{ item|lower }}" id="{{ item|lower }}{{ i }}" value="{{ i }}" required>
                         <label for="{{ item|lower }}{{ i }}"></label>
@@ -61,7 +61,7 @@
             </div>
 
             <div class="text-center">
-                <button type="submit" class="btn" style="margin-top: 1rem;">Enviar Avaliação</button>
+                <button type="submit" class="btn mt-3">Enviar Avaliação</button>
             </div>
         </form>
     </div>
