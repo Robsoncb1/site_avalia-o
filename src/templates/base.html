@@ -24,14 +24,11 @@
 </head>
 <body>
 
-<!-- Header simplificado -->
-<header>
-    <div class="header-container container" style="display: flex; align-items: center; justify-content: space-between;">
+<!-- Header com apenas logo centralizada -->
+<header style="background-color: #222; padding: 0.5rem 0;">
+    <div class="header-container container" style="display: flex; align-items: center; justify-content: center;">
         <div class="logo">
-            <img src="{{ url_for('static', filename='img/logo-coco.png') }}" alt="Logo Coco Bambu" style="height: 80px;">
-        </div>
-        <div style="flex: 1; text-align: center;">
-            <h1 style="color: white; font-size: 1.6rem; font-weight: 500;">Avaliação do Buffet</h1>
+            <img src="{{ url_for('static', filename='img/logo-coco.png') }}" alt="Logo Coco Bambu" style="height: 60px;">
         </div>
     </div>
 </header>
