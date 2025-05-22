@@ -1,10 +1,2 @@
-from flask import render_template
-from src.main import app
-
-@app.route('/')
-def home():
-    return render_template('home.html')
-
-@app.route('/avaliar')
-def avaliar():
-    return render_template('avaliar.html')
+# src/__init__.py
+# Arquivo vazio — necessário apenas para o Python reconhecer o diretório como um pacote
